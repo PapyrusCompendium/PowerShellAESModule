@@ -5,7 +5,7 @@ function Encrypt{param($data, $password, $keySize = 256)
     $aesProvider.KeySize = $keySize
     $aesProvider.GenerateIV()
 
-    #We are not saving this hash, we do not need to salt it
+    # We are not saving this hash, we do not need to salt it
     $aesProvider.Key = (New-Object System.Security.Cryptography.PasswordDeriveBytes($password, (New-Object byte[] 0))).GetBytes($aesProvider.BlockSize / 8)
 
     $memStream = New-Object System.IO.MemoryStream
@@ -26,7 +26,7 @@ function Decrypt{param([byte[]]$data, $password, $keySize = 256)
     $aesProvider.KeySize = $keySize
     $aesProvider.IV = [System.Linq.Enumerable]::Take($data, $aesProvider.BlockSize / 8)
 
-    #We are not saving this hash, we do not need to salt it
+    # We are not saving this hash, we do not need to salt it
     $aesProvider.Key = (New-Object System.Security.Cryptography.PasswordDeriveBytes($password, (New-Object byte[] 0))).GetBytes($aesProvider.BlockSize / 8)
 
     $decrypted = New-Object byte[]($data.Length - $aesProvider.IV.Length)
